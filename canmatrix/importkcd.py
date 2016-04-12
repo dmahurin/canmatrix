@@ -46,7 +46,7 @@ def parseSignal(signal, mux, namespace, nodelist):
 
     is_little_endian = True
     if 'endianess' in signal.attrib:
-        if signal.get('endianess') == 'little':
+        if signal.get('endianess') == 'big':
             is_little_endian = False
 
     unit = ""
@@ -95,6 +95,7 @@ def parseSignal(signal, mux, namespace, nodelist):
                       unit=unit,
                       receiver=receiver,
                       multiplex=mux)     
+    newSig.setMsbReverseStartbit(int(startbit))
 
     notes = signal.findall('./' + namespace + 'Notes')
     comment = ""
@@ -199,7 +200,7 @@ def importKcd(filename):
 
             if is_little_endian == False:
                 #motorola/big_endian set/convert startbit
-                newSig.setLsbStartbit(startbit)
+                newSig.setMsbReverseStartbit(startbit)
             notes = multiplex.findall('./' + namespace + 'Notes')
             comment = ""
             for note in notes:
